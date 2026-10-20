@@ -189,9 +189,9 @@ public class MainActivity extends Activity {
             String old = prefs.getString("tasks", "Leer páginas 12 y 13|Terminar actividad de Ciencias|Preparar materiales de Tecnología");
             prefs.edit().putString("tasks", old.isEmpty()?value:old+"|"+value).apply();
             field.setText("");
-            render.run();
+            render[0].run();
         });
-        render.run();
+        render[0].run();
     }
 
     private void grades() {

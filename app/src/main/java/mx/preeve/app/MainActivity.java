@@ -140,7 +140,8 @@ public class MainActivity extends Activity {
         LinearLayout list = new LinearLayout(this);
         list.setOrientation(LinearLayout.VERTICAL);
         content.addView(list);
-        Runnable render = () -> {
+        Runnable[] render = new Runnable[1];
+        render[0] = () -> {
             list.removeAllViews();
             String saved = prefs.getString("tasks", "Leer páginas 12 y 13|Terminar actividad de Ciencias|Preparar materiales de Tecnología");
             if (saved.isEmpty()) { list.addView(text("No tienes tareas pendientes.", 14, Color.DKGRAY, false)); return; }
@@ -157,7 +158,7 @@ public class MainActivity extends Activity {
                     List<String> values = new ArrayList<>(Arrays.asList(prefs.getString("tasks","").split("\\|")));
                     values.remove(task);
                     prefs.edit().putString("tasks", android.text.TextUtils.join("|", values)).apply();
-                    render.run();
+                    render[0].run();
                 });
                 item.addView(del);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1,-2);

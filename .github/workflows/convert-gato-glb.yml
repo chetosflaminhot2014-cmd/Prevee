@@ -1,0 +1,73 @@
+name: Convert Gato Terror GLB to Bedrock
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  convert-and-package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install converter dependencies
+        run: python -m pip install --upgrade pip trimesh pillow numpy
+
+      - name: Convert GLB to Bedrock cubes and texture
+        run: python tools/convert_glb_to_bedrock.py
+
+      - name: Validate generated geometry and manifests
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path("addons/Gato-Terror")
+          for path in root.rglob("*.json"):
+              json.loads(path.read_text(encoding="utf-8"))
+              print("JSON OK:", path)
+          geo = json.loads((root / "GatoTerrorRP/models/entity/gato_terror.geo.json").read_text(encoding="utf-8"))
+          cubes = geo["minecraft:geometry"][0]["bones"][0]["cubes"]
+          if not cubes:
+              raise SystemExit("Generated geometry contains no cubes")
+          texture = root / "GatoTerrorRP/textures/entity/gato.png"
+          if not texture.exists() or texture.stat().st_size == 0:
+              raise SystemExit("Generated texture missing")
+          print(f"Generated model has {len(cubes)} cubes; texture size {texture.stat().st_size} bytes")
+          PY
+
+      - name: Commit converted model to repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add addons/Gato-Terror/GatoTerrorRP/models/entity/gato_terror.geo.json addons/Gato-Terror/GatoTerrorRP/textures/entity/gato.png
+          if git diff --cached --quiet; then
+            echo "No generated model changes to commit."
+          else
+            git commit -m "Convert Cat in the Hat GLB for Gato Terror Bedrock addon"
+            git push
+          fi
+
+      - name: Package .mcaddon
+        run: |
+          cd addons/Gato-Terror
+          zip -r ../../Gato-Terror-mcaddon.zip GatoTerrorBP GatoTerrorRP
+          cd ../..
+          mv Gato-Terror-mcaddon.zip Gato-Terror-mcaddon.mcaddon
+
+      - name: Upload addon artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Gato-Terror-mcaddon
+          path: Gato-Terror-mcaddon.mcaddon
+          if-no-files-found: error
+          retention-days: 30

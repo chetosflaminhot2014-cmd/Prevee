@@ -1,0 +1,20 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "gato:gato_terror",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/gato"
+      },
+      "geometry": {
+        "default": "geometry.gato_terror"
+      },
+      "render_controllers": [
+        "controller.render.gato_terror"
+      ]
+    }
+  }
+}

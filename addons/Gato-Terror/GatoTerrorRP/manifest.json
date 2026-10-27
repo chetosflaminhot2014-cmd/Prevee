@@ -1,0 +1,39 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Gato Terror RP",
+    "description": "Modelo y apariencia de Gato Terror",
+    "uuid": "8b4d1a20-7d32-4ef1-9f60-1f2b1c0a1003",
+    "version": [
+      1,
+      0,
+      0
+    ],
+    "min_engine_version": [
+      1,
+      20,
+      0
+    ]
+  },
+  "modules": [
+    {
+      "type": "resources",
+      "uuid": "8b4d1a20-7d32-4ef1-9f60-1f2b1c0a1004",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "uuid": "8b4d1a20-7d32-4ef1-9f60-1f2b1c0a1001",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    }
+  ]
+}

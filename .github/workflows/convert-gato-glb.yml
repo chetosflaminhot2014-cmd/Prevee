@@ -5,6 +5,9 @@ on:
     paths:
       - "cat_in_the_hat.glb"
       - "tools/convert_glb_to_bedrock.py"
+      - "tools/generate_gato_sounds.py"
+      - "addons/Gato-Terror/GatoTerrorBP/entities/gato_terror.json"
+      - "addons/Gato-Terror/GatoTerrorRP/sounds/sound_definitions.json"
       - ".github/workflows/convert-gato-glb.yml"
   workflow_dispatch:
 permissions:
@@ -30,7 +33,10 @@ jobs:
       - name: Convert GLB to Bedrock cubes and texture
         run: python tools/convert_glb_to_bedrock.py
 
-      - name: Validate generated geometry and manifests
+      - name: Generate original sound effects
+        run: python tools/generate_gato_sounds.py
+
+      - name: Validate generated geometry, sounds, and manifests
         run: |
           python - <<'PY'
           import json
@@ -43,6 +49,13 @@ jobs:
           cubes = geo["minecraft:geometry"][0]["bones"][0]["cubes"]
           if not cubes:
               raise SystemExit("Generated geometry contains no cubes")
+          sounds = root / "GatoTerrorRP/sounds/gato"
+          expected_sounds = ["ambient.wav", "appear.wav", "growl.wav", "attack.wav", "steps.wav", "hurt.wav"]
+          for name in expected_sounds:
+              sound = sounds / name
+              if not sound.exists() or sound.stat().st_size < 100:
+                  raise SystemExit(f"Sound missing or empty: {sound}")
+          print(f"Generated {len(expected_sounds)} sound files.")
           texture = root / "GatoTerrorRP/textures/entity/gato.png"
           if not texture.exists() or texture.stat().st_size == 0:
               raise SystemExit("Generated texture missing")
@@ -53,7 +66,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add addons/Gato-Terror/GatoTerrorRP/models/entity/gato_terror.geo.json addons/Gato-Terror/GatoTerrorRP/textures/entity/gato.png
+          git add addons/Gato-Terror/GatoTerrorRP/models/entity/gato_terror.geo.json addons/Gato-Terror/GatoTerrorRP/textures/entity/gato.png addons/Gato-Terror/GatoTerrorRP/sounds/gato/*.wav
           if git diff --cached --quiet; then
             echo "No generated model changes to commit."
           else

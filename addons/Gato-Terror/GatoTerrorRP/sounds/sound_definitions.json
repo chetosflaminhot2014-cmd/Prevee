@@ -1,0 +1,59 @@
+{
+  "format_version": "1.14.0",
+  "sound_definitions": {
+    "gato.ambient": {
+      "category": "hostile",
+      "sounds": [
+        {
+          "name": "sounds/gato/ambient",
+          "volume": 0.8
+        }
+      ]
+    },
+    "gato.appear": {
+      "category": "hostile",
+      "sounds": [
+        {
+          "name": "sounds/gato/appear",
+          "volume": 1
+        }
+      ]
+    },
+    "gato.growl": {
+      "category": "hostile",
+      "sounds": [
+        {
+          "name": "sounds/gato/growl",
+          "volume": 1
+        }
+      ]
+    },
+    "gato.attack": {
+      "category": "hostile",
+      "sounds": [
+        {
+          "name": "sounds/gato/attack",
+          "volume": 1
+        }
+      ]
+    },
+    "gato.steps": {
+      "category": "hostile",
+      "sounds": [
+        {
+          "name": "sounds/gato/steps",
+          "volume": 0.65
+        }
+      ]
+    },
+    "gato.hurt": {
+      "category": "hostile",
+      "sounds": [
+        {
+          "name": "sounds/gato/hurt",
+          "volume": 0.9
+        }
+      ]
+    }
+  }
+}

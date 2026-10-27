@@ -1,8 +1,12 @@
 name: Convert Gato Terror GLB to Bedrock
 
 on:
+  push:
+    paths:
+      - "cat_in_the_hat.glb"
+      - "tools/convert_glb_to_bedrock.py"
+      - ".github/workflows/convert-gato-glb.yml"
   workflow_dispatch:
-
 permissions:
   contents: write
 

@@ -65,7 +65,9 @@ if not parts:
     raise SystemExit("The GLB contains no triangle meshes.")
 
 all_bounds = np.vstack([mesh.bounds for mesh, _ in parts])
-extent = all_bounds[1] - all_bounds[0]
+bounds_min = all_bounds.min(axis=0)
+bounds_max = all_bounds.max(axis=0)
+extent = bounds_max - bounds_min
 if not np.all(np.isfinite(extent)) or float(extent.max()) <= 0:
     raise SystemExit("Invalid model bounds.")
 pitch = float(extent[1]) / MAX_VOXELS_HIGH if extent[1] > 0 else float(extent.max()) / MAX_VOXELS_HIGH
@@ -88,9 +90,9 @@ for mesh, rgba in parts:
         # Normalize the source model into a 2.8-block tall entity, with its
         # feet at y=0. GLB axes are retained as far as possible; Y is up.
         normalized = (
-            (point[0] - all_bounds[0, 0]) / pitch,
-            (point[1] - all_bounds[0, 1]) / pitch,
-            (point[2] - all_bounds[0, 2]) / pitch,
+            (point[0] - bounds_min[0]) / pitch,
+            (point[1] - bounds_min[1]) / pitch,
+            (point[2] - bounds_min[2]) / pitch,
         )
         key = tuple(int(round(v)) for v in normalized)
         voxels.setdefault(key, material_index)

@@ -1,0 +1,29 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Gato Terror BP",
+    "description": "Entidad Gato Terror para Minecraft Bedrock",
+    "uuid": "8b4d1a20-7d32-4ef1-9f60-1f2b1c0a1001",
+    "version": [
+      1,
+      0,
+      0
+    ],
+    "min_engine_version": [
+      1,
+      20,
+      0
+    ]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "8b4d1a20-7d32-4ef1-9f60-1f2b1c0a1002",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    }
+  ]
+}

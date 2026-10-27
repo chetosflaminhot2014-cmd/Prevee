@@ -80,6 +80,19 @@
       "minecraft:behavior.leap_at_target": {
         "priority": 3,
         "yd": 0.35
+      },
+      "minecraft:ambient_sound_interval": {
+        "event": "gato.ambient",
+        "range": 16,
+        "value": 8,
+        "cooldown": 8
+      }
+    },
+    "events": {
+      "minecraft:entity_spawned": {
+        "play_sound": {
+          "sound": "gato.appear"
+        }
       }
     }
   }

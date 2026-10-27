@@ -19,13 +19,13 @@
         "max": 100
       },
       "minecraft:attack": {
-        "damage": 6
+        "damage": 8
       },
       "minecraft:movement": {
-        "value": 0.35
+        "value": 0.38
       },
       "minecraft:follow_range": {
-        "value": 32
+        "value": 40
       },
       "minecraft:movement.basic": {},
       "minecraft:navigation.walk": {
@@ -76,6 +76,10 @@
       },
       "minecraft:behavior.random_look_around": {
         "priority": 7
+      },
+      "minecraft:behavior.leap_at_target": {
+        "priority": 3,
+        "yd": 0.35
       }
     }
   }

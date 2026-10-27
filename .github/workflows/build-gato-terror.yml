@@ -1,0 +1,48 @@
+name: Build Gato Terror Minecraft Addon
+
+on:
+  push:
+    paths:
+      - "addons/Gato-Terror/**"
+      - ".github/workflows/build-gato-terror.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-addon:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate JSON files
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path("addons/Gato-Terror")
+          files = list(root.rglob("*.json"))
+          if not files:
+              raise SystemExit("No JSON files found")
+          for path in files:
+              with path.open(encoding="utf-8") as f:
+                  json.load(f)
+              print("OK:", path)
+          PY
+
+      - name: Package .mcaddon
+        run: |
+          cd addons/Gato-Terror
+          zip -r ../../Gato-Terror-mcaddon.zip GatoTerrorBP GatoTerrorRP
+          cd ../..
+          mv Gato-Terror-mcaddon.zip Gato-Terror-mcaddon.mcaddon
+
+      - name: Upload addon
+        uses: actions/upload-artifact@v4
+        with:
+          name: Gato-Terror-mcaddon
+          path: Gato-Terror-mcaddon.mcaddon
+          if-no-files-found: error
+          retention-days: 30
